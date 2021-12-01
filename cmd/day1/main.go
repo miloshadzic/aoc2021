@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	input "github.com/miloshadzic/aoc2020/internal/input"
+	"github.com/miloshadzic/aoc2021/internal/input"
 )
 
 func day1a() int64 {
