@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/miloshadzic/aoc2021/internal/input"
 )
@@ -11,9 +10,7 @@ func day1a() int64 {
 	var prev, increases int64
 	prev, increases = -1, 0
 
-	for _, line := range input.GetLines("day1") {
-		depth, _ := strconv.ParseInt(line, 10, 0)
-
+	for _, depth := range input.GetInt64s("day1") {
 		if depth > prev && prev > 0 {
 			increases++
 		}
