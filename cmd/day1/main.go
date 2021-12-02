@@ -3,14 +3,15 @@ package main
 import (
 	"fmt"
 
-	"github.com/miloshadzic/aoc2021/internal/input"
+	"github.com/miloshadzic/aoc2021/in"
+	input "github.com/miloshadzic/aoc2021/in"
 )
 
 func day1a() int64 {
 	var prev, increases int64
 	prev, increases = -1, 0
 
-	for _, depth := range input.GetInt64s("day1") {
+	for _, depth := range in.GetInt64s("day1") {
 		if depth > prev && prev > 0 {
 			increases++
 		}
