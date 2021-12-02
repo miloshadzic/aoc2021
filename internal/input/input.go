@@ -8,8 +8,21 @@ import (
 	"strings"
 )
 
-func GetCommands(input string) [][]string {
-	var commands [][]string
+type Direction int
+
+const (
+	Forward Direction = iota
+	Up
+	Down
+)
+
+type Command struct {
+	Direction Direction
+	Amount    int64
+}
+
+func GetCommands(input string) []Command {
+	var commands []Command
 
 	inputString, err := os.ReadFile(fmt.Sprintf("internal/inputs/%s.txt", input))
 	if err != nil {
@@ -17,10 +30,25 @@ func GetCommands(input string) [][]string {
 	}
 
 	for _, line := range strings.Split(string(inputString), "\n") {
-		command := strings.Split(line, " ")
-		if len(command) == 2 {
-			commands = append(commands, command)
+		commandTokens := strings.Split(line, " ")
+		if len(commandTokens) != 2 {
+			continue
 		}
+
+		var dir Direction
+
+		switch commandTokens[0] {
+		case "forward":
+			dir = Forward
+		case "up":
+			dir = Up
+		case "down":
+			dir = Down
+		}
+
+		amount, _ := strconv.ParseInt(commandTokens[1], 10, 0)
+
+		commands = append(commands, Command{dir, amount})
 	}
 
 	return commands

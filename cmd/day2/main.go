@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/miloshadzic/aoc2021/internal/input"
 )
@@ -13,23 +12,23 @@ type Submarine struct {
 	vPos int64
 }
 
+func (sub *Submarine) Navigate(cmd input.Command) {
+	switch cmd.Direction {
+	case input.Forward:
+		sub.hPos += cmd.Amount
+		sub.vPos += cmd.Amount * sub.aim
+	case input.Up:
+		sub.aim -= cmd.Amount
+	case input.Down:
+		sub.aim += cmd.Amount
+	}
+}
+
 func main() {
 	sub := Submarine{0, 0, 0}
 
-	course := input.GetCommands("day2")
-
-	for _, command := range course {
-		amount, _ := strconv.ParseInt(command[1], 10, 0)
-
-		switch command[0] {
-		case "forward":
-			sub.hPos += amount
-			sub.vPos += amount * sub.aim
-		case "up":
-			sub.aim -= amount
-		case "down":
-			sub.aim += amount
-		}
+	for _, command := range input.GetCommands("day2") {
+		sub.Navigate(command)
 	}
 
 	fmt.Println(sub)
