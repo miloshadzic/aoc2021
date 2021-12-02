@@ -8,6 +8,24 @@ import (
 	"strings"
 )
 
+func GetCommands(input string) [][]string {
+	var commands [][]string
+
+	inputString, err := os.ReadFile(fmt.Sprintf("internal/inputs/%s.txt", input))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, line := range strings.Split(string(inputString), "\n") {
+		command := strings.Split(line, " ")
+		if len(command) == 2 {
+			commands = append(commands, command)
+		}
+	}
+
+	return commands
+}
+
 func GetLines(input string) []string {
 	var lines []string
 
