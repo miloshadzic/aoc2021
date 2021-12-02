@@ -6,23 +6,12 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/miloshadzic/aoc2021/sub"
 )
 
-type Direction int
-
-const (
-	Forward Direction = iota
-	Up
-	Down
-)
-
-type Command struct {
-	Direction Direction
-	Amount    int64
-}
-
-func GetCommands(input string) []Command {
-	var commands []Command
+func GetCommands(input string) []sub.Command {
+	var commands []sub.Command
 
 	inputString, err := os.ReadFile(fmt.Sprintf("internal/inputs/%s.txt", input))
 	if err != nil {
@@ -35,20 +24,20 @@ func GetCommands(input string) []Command {
 			continue
 		}
 
-		var dir Direction
+		var dir sub.Direction
 
 		switch commandTokens[0] {
 		case "forward":
-			dir = Forward
+			dir = sub.Forward
 		case "up":
-			dir = Up
+			dir = sub.Up
 		case "down":
-			dir = Down
+			dir = sub.Down
 		}
 
 		amount, _ := strconv.ParseInt(commandTokens[1], 10, 0)
 
-		commands = append(commands, Command{dir, amount})
+		commands = append(commands, sub.Command{Direction: dir, Amount: amount})
 	}
 
 	return commands
