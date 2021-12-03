@@ -5,6 +5,10 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
+	"strconv"
+
+	"github.com/miloshadzic/aoc2021/in"
 )
 
 func check(e error) {
@@ -51,15 +55,74 @@ func main() {
 	fmt.Println(total)
 	fmt.Println(mcb)
 
+	bits := [12]string{"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}
+
 	for i, b := range mcb {
 		if b > int64(total/2) {
 			gamma = gamma | (0b00001 << (11 - i))
+			bits[i] = "1"
 		}
 	}
 
 	epsilon = 0b111111111111 ^ gamma
 
-	fmt.Println(gamma)
-	fmt.Println(epsilon)
 	fmt.Println(gamma * epsilon)
+
+	// Going to do this in a shittier way so I can do it on time
+
+	lines := in.GetLines("day3")
+	sort.Strings(lines)
+	lines = lines[1:]
+
+	i, l, r := 0, 0, len(lines)
+
+	for len(lines[l:r]) > 1 {
+
+		for string(lines[l:][0][i]) != bits[i] {
+			l++
+		}
+
+		for string(lines[:r][len(lines[:r])-1][i]) != bits[i] {
+			r--
+		}
+
+		i++
+	}
+
+	fmt.Println()
+	fmt.Println(lines[l])
+
+	oxy, err := strconv.ParseInt(lines[l], 2, 64)
+
+	// FML
+
+	i, l, r = 0, 0, len(lines)
+
+	for len(lines[l:r]) > 1 {
+
+		for string(lines[l:][0][i]) != revBits(i, bits) {
+			l++
+		}
+
+		for string(lines[:r][len(lines[:r])-1][i]) != revBits(i, bits) {
+			r--
+		}
+
+		i++
+	}
+	co2, err := strconv.ParseInt(lines[l], 2, 64)
+
+	fmt.Println()
+	fmt.Println(lines[l])
+
+	fmt.Println()
+	fmt.Println(oxy * co2)
+}
+
+func revBits(i int, bits [12]string) string {
+	if bits[i] == "1" {
+		return "0"
+	} else {
+		return "1"
+	}
 }
