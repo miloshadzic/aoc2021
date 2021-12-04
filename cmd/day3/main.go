@@ -22,7 +22,7 @@ func main() {
 	check(err)
 	defer f.Close()
 
-	mcb := [12]int64{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	mcb := [12]int64{0, 0, 0, 0, 0}
 	buf := make([]byte, 1)
 	gamma, epsilon := 0, 0
 
@@ -52,10 +52,7 @@ func main() {
 		total++
 	}
 
-	fmt.Println(total)
-	fmt.Println(mcb)
-
-	bits := [12]string{"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}
+	bits := [12]string{"0", "0", "0", "0", "0"}
 
 	for i, b := range mcb {
 		if b > int64(total/2) {
@@ -73,49 +70,79 @@ func main() {
 	lines := in.GetLines("day3")
 	sort.Strings(lines)
 	lines = lines[1:]
+	selected := lines
 
-	i, l, r := 0, 0, len(lines)
+	pos := 0
 
-	for len(lines[l:r]) > 1 {
+	for len(selected) > 1 {
+		ones, rem := 0, len(selected)
+		var filtered []string
 
-		for string(lines[l:][0][i]) != bits[i] {
-			l++
+		for i := range selected {
+			if string(selected[i][pos]) == "1" {
+				ones++
+			}
 		}
 
-		for string(lines[:r][len(lines[:r])-1][i]) != bits[i] {
-			r--
+		zeroes := rem - ones
+
+		if ones >= zeroes {
+			for i := range selected {
+				if string(selected[i][pos]) != "0" {
+					filtered = append(filtered, selected[i])
+				}
+			}
+		} else {
+			for i := range selected {
+				if string(selected[i][pos]) != "1" {
+					filtered = append(filtered, selected[i])
+				}
+			}
 		}
 
-		i++
+		selected = filtered
+		pos++
 	}
 
-	fmt.Println()
-	fmt.Println(lines[l])
-
-	oxy, err := strconv.ParseInt(lines[l], 2, 64)
+	oxy, err := strconv.ParseInt(selected[0], 2, 64)
 
 	// FML
 
-	i, l, r = 0, 0, len(lines)
+	selected = lines
+	pos = 0
 
-	for len(lines[l:r]) > 1 {
+	for len(selected) > 1 {
+		zeroes, rem := 0, len(selected)
+		var filtered []string
 
-		for string(lines[l:][0][i]) != revBits(i, bits) {
-			l++
+		for i := range selected {
+			if string(selected[i][pos]) == "0" {
+				zeroes++
+			}
 		}
 
-		for string(lines[:r][len(lines[:r])-1][i]) != revBits(i, bits) {
-			r--
+		ones := rem - zeroes
+
+		if zeroes > ones {
+			for i := range selected {
+				if string(selected[i][pos]) != "0" {
+					filtered = append(filtered, selected[i])
+				}
+			}
+		} else {
+			for i := range selected {
+				if string(selected[i][pos]) != "1" {
+					filtered = append(filtered, selected[i])
+				}
+			}
 		}
 
-		i++
+		selected = filtered
+		pos++
 	}
-	co2, err := strconv.ParseInt(lines[l], 2, 64)
 
-	fmt.Println()
-	fmt.Println(lines[l])
+	co2, err := strconv.ParseInt(selected[0], 2, 64)
 
-	fmt.Println()
 	fmt.Println(oxy * co2)
 }
 
