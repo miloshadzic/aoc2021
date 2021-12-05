@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	var grid [1000][1000]int
+	var grid [1000][1000]uint8
 	var line geo.Line
 	overlaps := 0
 
