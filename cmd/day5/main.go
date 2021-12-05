@@ -6,29 +6,14 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/miloshadzic/aoc2021/geo"
 )
-
-// A line segment
-type Line struct {
-	A Point
-	B Point
-}
-
-type Point struct {
-	X int
-	Y int
-}
 
 func main() {
 	var grid [1000][1000]int
-	var lines []Line
-
-	// Initialize the grid
-	for i := range grid {
-		for j := range grid[i] {
-			grid[i][j] = 0
-		}
-	}
+	var line geo.Line
+	overlaps := 0
 
 	f, err := os.Open("internal/inputs/day5.txt")
 	if err != nil {
@@ -40,86 +25,32 @@ func main() {
 
 	// Read the line segments
 	for s.Scan() {
-		line := Line{Point{}, Point{}}
-
 		pair := strings.Split(s.Text(), " -> ")
 
 		A := strings.Split(pair[0], ",")
 		B := strings.Split(pair[1], ",")
 
-		line.A.X, _ = strconv.Atoi(A[0])
-		line.A.Y, _ = strconv.Atoi(A[1])
-		line.B.X, _ = strconv.Atoi(B[0])
-		line.B.Y, _ = strconv.Atoi(B[1])
+		aX, _ := strconv.Atoi(A[0])
+		aY, _ := strconv.Atoi(A[1])
+		bX, _ := strconv.Atoi(B[0])
+		bY, _ := strconv.Atoi(B[1])
 
-		lines = append(lines, line)
-	}
+		line = geo.Line{
+			A: geo.Point{X: aX, Y: aY},
+			B: geo.Point{X: bX, Y: bY},
+		}
 
-	for _, line := range lines {
-		for i := 0; i < line.len(); i++ {
-			x := line.A.X + i*line.xStep()
-			y := line.A.Y + i*line.yStep()
+		for i := 0; i < line.Len(); i++ {
+			x := line.A.X + i*line.XStep()
+			y := line.A.Y + i*line.YStep()
 
 			grid[x][y]++
-		}
-	}
 
-	overlaps := 0
-	for i := range grid {
-		for j := range grid[i] {
-			if grid[i][j] > 1 {
+			if grid[x][y] == 2 {
 				overlaps++
 			}
 		}
 	}
 
 	fmt.Println(overlaps)
-}
-
-// Length of a line segment
-func (line *Line) len() int {
-	return 1 + Max(Abs(line.dx()), Abs(line.dy()))
-}
-
-func (line *Line) dx() int {
-	return line.B.X - line.A.X
-}
-
-func (line *Line) dy() int {
-	return line.B.Y - line.A.Y
-}
-
-func (line *Line) xStep() int {
-	if line.dx() > 0 {
-		return 1
-	} else if line.dx() < 0 {
-		return -1
-	}
-
-	return 0
-}
-
-func (line *Line) yStep() int {
-	if line.dy() > 0 {
-		return 1
-	} else if line.dy() < 0 {
-		return -1
-	}
-
-	return 0
-}
-
-func Abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
-
-func Max(x, y int) int {
-	if x > y {
-		return x
-	}
-
-	return y
 }
