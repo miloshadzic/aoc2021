@@ -20,7 +20,7 @@ func main() {
 		}
 	}
 
-	for i := 0; i <= 255; i++ {
+	for i := 0; i < 256; i++ {
 		temp := fish[1:9]
 		temp = append(temp, fish[0])
 		temp[6] += temp[8]
