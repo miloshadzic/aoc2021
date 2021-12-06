@@ -8,14 +8,14 @@ import (
 )
 
 func main() {
-	// [0, 1, 2, 3, 4, 5, 6, 7, 8]
-
 	var fish [9]uint64
 	var temp uint64
+
 	input, _ := os.ReadFile("internal/inputs/day6.txt")
 
 	for _, n := range strings.Split(string(input), ",") {
 		timer, err := strconv.Atoi(n)
+
 		if err == nil {
 			fish[timer]++
 		}
@@ -23,6 +23,7 @@ func main() {
 
 	for i := 0; i <= 255; i++ {
 		fish[0], temp = temp, fish[0]
+
 		fish[1], fish[0] = fish[0], fish[1]
 		fish[2], fish[1] = fish[1], fish[2]
 		fish[3], fish[2] = fish[2], fish[3]
@@ -31,6 +32,7 @@ func main() {
 		fish[6], fish[5] = fish[5], fish[6]
 		fish[7], fish[6] = fish[6], fish[7]
 		fish[8], fish[7] = fish[7], fish[8]
+
 		fish[8] = temp
 		fish[6] += temp
 	}
