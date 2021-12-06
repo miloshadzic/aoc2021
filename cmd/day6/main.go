@@ -8,8 +8,7 @@ import (
 )
 
 func main() {
-	var fish [9]uint64
-	var temp uint64
+	fish := make([]uint64, 9, 9)
 
 	input, _ := os.ReadFile("internal/inputs/day6.txt")
 
@@ -22,19 +21,10 @@ func main() {
 	}
 
 	for i := 0; i <= 255; i++ {
-		fish[0], temp = temp, fish[0]
-
-		fish[1], fish[0] = fish[0], fish[1]
-		fish[2], fish[1] = fish[1], fish[2]
-		fish[3], fish[2] = fish[2], fish[3]
-		fish[4], fish[3] = fish[3], fish[4]
-		fish[5], fish[4] = fish[4], fish[5]
-		fish[6], fish[5] = fish[5], fish[6]
-		fish[7], fish[6] = fish[6], fish[7]
-		fish[8], fish[7] = fish[7], fish[8]
-
-		fish[8] = temp
-		fish[6] += temp
+		temp := fish[1:9]
+		temp = append(temp, fish[0])
+		temp[6] += temp[8]
+		fish = temp
 	}
 
 	var sum uint64 = 0
