@@ -10,8 +10,6 @@ import (
 	"github.com/miloshadzic/aoc2021/geo"
 )
 
-type Basin []geo.Point
-
 type HeightMap struct {
 	points [][]int
 	basins [][]bool // actually a basin map
