@@ -8,6 +8,23 @@ import (
 	"github.com/miloshadzic/aoc2021/geo"
 )
 
+func main() {
+	cave := InitCave("day11")
+
+	for i := 0; i < 99999999; i++ {
+		if i == 100 {
+			fmt.Println(cave.Flashes)
+		}
+
+		cave.Next()
+
+		if cave.AllFlash() {
+			fmt.Println("Step", i+1)
+			break
+		}
+	}
+}
+
 type Cave struct {
 	Energy  [10][10]int8
 	Flashed [10][10]bool
@@ -101,21 +118,4 @@ func (cave *Cave) AllFlash() bool {
 	}
 
 	return all
-}
-
-func main() {
-	cave := InitCave("day11")
-
-	for i := 0; i < 99999999; i++ {
-		if i == 100 {
-			fmt.Println(cave.Flashes)
-		}
-
-		cave.Next()
-
-		if cave.AllFlash() {
-			fmt.Println("Step", i+1)
-			break
-		}
-	}
 }
