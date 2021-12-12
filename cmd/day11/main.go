@@ -11,7 +11,7 @@ import (
 func main() {
 	cave := InitCave("day11")
 
-	for i := 0; i < 99999999; i++ {
+	for i := 0; ; i++ {
 		if i == 100 {
 			fmt.Println(cave.Flashes)
 		}
