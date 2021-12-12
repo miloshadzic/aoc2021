@@ -120,13 +120,13 @@ func (cave *Cave) Flash(i, j int) {
 }
 
 func (cave *Cave) AllFlash() bool {
-	all := true
-
 	for i := 0; i < 10; i++ {
 		for j := 0; j < 10; j++ {
-			all = all && cave.Octopi[i][j].Flashed
+			if !cave.Octopi[i][j].Flashed {
+				return false
+			}
 		}
 	}
 
-	return all
+	return true
 }
